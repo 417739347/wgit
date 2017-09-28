@@ -155,7 +155,7 @@ void Sender_Task(void *pvParameters)
                  {
                     uint32_t SendNum=1;
                  }
-                 vTaskDelay(2/ portTICK_RATE_MS);
+                 vTaskDelay(2);
          }       
 }
 
@@ -166,12 +166,12 @@ void Receiver_Task(void *pvParameters)
          while(1)
          {
                  /*向队列中获取内容*/
-                 if(xQueueReceive(MsgQueue,&ReceiverNum,
-                 0/portTICK_RATE_MS ) == pdTRUE )
+                 for(xQueueReceive(MsgQueue,&ReceiverNum,
+                 0/portTICK_RATE_MS) == pdTRUE;)
                  {
                   ReceiverFlag=ReceiverFlag+ReceiverNum;
                  }
-                 vTaskDelay(1000 / portTICK_RATE_MS);
+                 vTaskDelay(1000);
          }       
 }
 void  Monitor_Task(void)
@@ -182,16 +182,16 @@ void  Monitor_Task(void)
         if(ReceiverFlag == SendFlag)
          {
           Green_LED_On();
-          delay(1000);
+          vTaskDelay(1000/ portTICK_RATE_MS);
           Green_LED_Off();
          }
          else
          {
           Red_LED_On();
-          delay(1000);
+          vTaskDelay(1000/ portTICK_RATE_MS);
           Red_LED_Off();
          }
-         vTaskDelay(10000 / portTICK_RATE_MS);
+         vTaskDelay(10000);
        }
 }
 
